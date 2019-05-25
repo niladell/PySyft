@@ -208,7 +208,8 @@ class TorchTensor(AbstractTensor):
             response = syft.frameworks.torch.hook_args.hook_response(
                 cmd, response, wrap_type=args_type
             )
-        except PureTorchTensorFoundError:  # means that it's not a wrapper but a pure tensor
+        except (PureTorchTensorFoundError, IndexError):
+            # means that it's not a wrapper but a pure tensor (or a variable to be converted to tensor)
             # TODO: clean this line
             cmd = (
                 "syft.local_worker.hook."
